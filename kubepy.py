@@ -12,8 +12,8 @@ class Recipes():
         self.recipes_list["recipes"]["custom"].append(custom_json)
         
     def remove(self, input):
-        self.remove_list["removals"].append(input)
-        
+        self.remove_list["removals"].append(f"{input}")
+    
     def shapeless(self, output, input):
         self.recipes_list["recipes"]["vanilla"].append({"type": "shapeless", "output": output, "input": input})
         
@@ -46,7 +46,7 @@ class Recipes():
             for recipe in self.recipes_list["recipes"]["custom"]:
                 f.write(f"\n    event.custom({json.dumps(recipe, indent=4)})")
             for recipe in self.remove_list["removals"]:
-                f.write(f"\n    event.remove({str(recipe)}")
+                f.write(f"\n    event.remove({recipe})")
             f.write("\n})")
             
 

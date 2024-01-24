@@ -1,17 +1,22 @@
 // Written with KubePY, expect errors or it to not work at all
 ServerEvents.recipes(event => {
-    event.shapeless('minecraft:oak_log', 'minecraft:oak_plank')
-    event.shapeless('minecraft:oak_log', 'minecraft:oak_plank')
+    event.shapeless('minecraft:diamond', 'minecraft:iron_block')
     event.smelting('minecraft:coal', 'minecraft:diamond')
     event.campfireCooking('minecraft:torch', 'minecraft:stick')
     event.blasting('minecraft:coal_block', 'minecraft:diamond')
     event.custom({
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item": "minecraft:stone"
+    "type": "tconstruct:entity_melting",
+    "entity": {
+        "types": [
+            "minecraft:skeleton",
+            "minecraft:stray"
+        ]
     },
-    "result": "minecraft:blackstone_stairs",
-    "count": 0
+    "result": {
+        "fluid": "tconstruct:molten_iron",
+        "amount": 25
+    },
+    "damage": 2
 })
-    event.remove({<built-in function id>: 'minecraft:glowstone'}
+    event.remove({'id': 'minecraft:glowstone'})
 })
