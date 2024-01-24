@@ -1,11 +1,14 @@
 import kubepy
 
-#recipes = kubepy.Recipes(instance_path='D:\\Minecraft\\instances\\1.20.1(2)\\.minecraft')
-recipes = kubepy.Recipes(instance_path=r'C:\Users\Admin\Documents\KubePY')
+instance_path = r"D:\Coding\KubePY"
+
+recipes = kubepy.Recipes(instance_path=instance_path)
 
 recipes.shapeless('minecraft:oak_log', 'minecraft:oak_plank')
 recipes.shapeless('minecraft:oak_log', 'minecraft:oak_plank')
 recipes.smelting('minecraft:coal', 'minecraft:diamond')
+recipes.campfireCooking('minecraft:torch', 'minecraft:stick')
+recipes.blasting('minecraft:coal_block', 'minecraft:diamond')
 recipes.custom({
                 "type": "minecraft:stonecutting",
                 "ingredient": {
@@ -14,5 +17,7 @@ recipes.custom({
                 "result": "minecraft:blackstone_stairs",
                 "count": 0
                 })
+recipes.remove({ id: 'minecraft:glowstone'})
 
-recipes.compile('script.js', '1.20.1')
+
+recipes.compile('script', '1.20.1')
