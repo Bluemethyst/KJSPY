@@ -1,0 +1,12 @@
+{
+    "recipes": [
+        "vanilla": [
+            "input": "hey",
+            "output": "test"
+                ],
+        "modded": [
+            "input": "hey",
+            "output": "test"
+        ]
+    ]
+}
