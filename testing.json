@@ -1,12 +1,13 @@
 {
-    "recipes": [
-        "vanilla": [
-            "input": "hey",
-            "output": "test"
-                ],
-        "modded": [
-            "input": "hey",
-            "output": "test"
-        ]
+    "items": [
+        {
+            "new_item": "test_item"
+        },
+        {
+            "texture": "minecraft:item/torch"
+        },
+        {
+            "max_stack_size": 16
+        }
     ]
 }

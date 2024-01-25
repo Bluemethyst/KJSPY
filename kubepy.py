@@ -1,7 +1,6 @@
 import json
 import os
 
-
 class Recipes():
     def __init__(self, instance_path):
         self.instance_path = instance_path
@@ -38,13 +37,16 @@ class Recipes():
     def smithing(self, output, input, upgrade_item):
         self.recipes_list["recipes"]["vanilla"].append({"type": "smithing", "output": output, "input": input, "upgrade_item": upgrade_item})
     
-    def compile(self, script_name, version):
+    def compile(self, script_name: str, version):
         dir_path = f"{self.instance_path}\\kubejs\\server_scripts"
         os.makedirs(dir_path, exist_ok=True)
         #print(json.dumps(self.recipes_list, indent=4))
         with open(f"{dir_path}\\{script_name}.js", 'w') as f:
             f.write('// Written with KubePY, expect errors or it to not work at all')
-            f.write('\nServerEvents.recipes(event => {')
+            if version < "1.19.2":
+                f.write("\nonEvent('recipes', event => {")
+            else:
+                f.write('\nServerEvents.recipes(event => {')
             for recipe in self.recipes_list["recipes"]["vanilla"]:
                 if recipe["type"] == "smithing":
                     f.write(f"\n    event.{recipe['type']}('{recipe['output']}', '{recipe['input']}', '{recipe['upgrade_item']}')")
@@ -57,5 +59,49 @@ class Recipes():
             for recipe in self.remove_list["removals"]:
                 f.write(f"\n    event.remove({recipe})")
             f.write("\n})")
-            
+    
 
+class ItemRegistry():
+    def __init__(self, instance_path: str):
+        self.instance_path = instance_path
+        self.item_list = {"items": []}
+        
+    def create(self, item_name):
+        self.item_list["items"].append({"new_item": item_name})
+        return self
+
+    def texture(self, texture):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["texture"] = texture
+        return self
+
+    def maxStackSize(self, max_stack_size):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["max_stack_size"] = max_stack_size
+        return self
+        
+    def compile(self, script_name: str, version: str):
+        """compile the kubepy code to valid kubejs code
+
+        Args:
+            script_name (str): name of the script
+            version (str): minecraft version of the script
+        """
+        dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
+        os.makedirs(dir_path, exist_ok=True)
+        #print(json.dumps(self.recipes_list, indent=4))
+        with open(f"{dir_path}\\{script_name}.js", 'w') as f:
+            f.write('// Written with KubePY, expect errors or it to not work at all')
+            if version < "1.19.2":
+                f.write("\nonEvent('recipes', event => {")
+            else:
+                f.write('\nServerEvents.recipes(event => {')
+            for item in self.item_list["items"]:
+                f.write(f"\n    event.create('{item['new_item']}')")
+            f.write(json.dumps(self.item_list, indent=4))
+    
+    
+class BlockRegistry():
+    def __init__(self, instance_path):
+        self.instance_path = instance_path
+        self.block_list = {"blocks": []}
