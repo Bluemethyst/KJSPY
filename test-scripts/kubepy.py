@@ -1,5 +1,12 @@
 import json
 import os
+import requests
+import git
+import shutil
+
+#https://packaging.python.org/en/latest/tutorials/packaging-projects/
+#https://docs.python.org/3/library/typing.html
+            
 
 class Recipes():
     def __init__(self, instance_path):

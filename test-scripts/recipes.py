@@ -29,4 +29,4 @@ recipes.custom({
 recipes.remove({'id': 'minecraft:glowstone'})
 
 
-recipes.compile('script', '1.20.1')
+recipes.compile('recipes_kpy', '1.20.1')
