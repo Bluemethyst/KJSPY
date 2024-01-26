@@ -73,8 +73,12 @@ class ItemRegistry():
         self.instance_path = instance_path
         self.item_list = {"items": []}
         
-    def create(self, item_name):
-        self.item_list["items"].append({"new_item": item_name})
+    def create(self, item_name, tool = None):
+        
+        if tool != None:
+            self.item_list["items"].append({"new_item": f"'{item_name}', '{tool}'"})
+        else:
+            self.item_list["items"].append({"new_item": f"'{item_name}'"})
         return self
 
     def texture(self, texture):
@@ -82,9 +86,59 @@ class ItemRegistry():
             self.item_list["items"][-1]["texture"] = texture
         return self
 
-    def maxStackSize(self, max_stack_size):
+    def maxStackSize(self, maxStackSize):
         if self.item_list["items"]:
-            self.item_list["items"][-1]["max_stack_size"] = max_stack_size
+            self.item_list["items"][-1]["maxStackSize"] = maxStackSize
+        return self
+    
+    def maxDamage(self, maxDamage):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["maxDamage"] = maxDamage
+        return self
+    
+    def burnTime(self, burnTime):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["burnTime"] = burnTime
+        return self
+    
+    def fireResistant(self, fireResistant):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["fireResistant"] = fireResistant
+        return self
+    
+    def rarity(self, rarity):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["rarity"] = rarity
+        return self
+    
+    def glow(self, glow):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["glow"] = glow
+        return self
+    
+    def tooltip(self, tooltip):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["tooltip"] = tooltip
+        return self
+    
+    def color(self, color):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["color"] = color
+        return self
+        
+    def displayName(self, displayName):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["displayName"] = displayName
+        return self
+        
+    def tag(self, tag):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["tag"] = tag
+        return self
+    
+    def tier(self, tier):
+        if self.item_list["items"]:
+            self.item_list["items"][-1]["tier"] = tier
         return self
         
     def compile(self, script_name: str, version: str):
@@ -100,15 +154,156 @@ class ItemRegistry():
         with open(f"{dir_path}\\{script_name}.js", 'w') as f:
             f.write('// Written with KubePY, expect errors or it to not work at all')
             if version < "1.19.2":
-                f.write("\nonEvent('recipes', event => {")
+                f.write("\nonEvent('item.registry', event => {")
             else:
-                f.write('\nServerEvents.recipes(event => {')
+                f.write("\nStartupEvents.registry('item', event => {")
             for item in self.item_list["items"]:
-                f.write(f"\n    event.create('{item['new_item']}')")
-            f.write(json.dumps(self.item_list, indent=4))
+                create_str = f"event.create({item['new_item']})"
+                if 'texture' in item:
+                    create_str += f".texture('{item['texture']}')"
+                if 'maxStackSize' in item:
+                    create_str += f".maxStackSize({item['maxStackSize']})"
+                if 'maxDamage' in item:
+                    create_str += f".maxDamage({item['maxDamage']})"
+                if 'burnTime' in item:
+                    create_str += f".burnTime({item['burnTime']})"
+                if 'fireResistant' in item:
+                    create_str += f".fireResistant({item['fireResistant']})"
+                if 'rarity' in item:
+                    create_str += f".rarity('{item['rarity']}')"
+                if 'glow' in item:
+                    create_str += f".glow({item['glow']})"
+                if 'tooltip' in item:
+                    create_str += f".tooltip('{item['tooltip']}')"
+                if 'color' in item:
+                    create_str += f".color({item['color']})"
+                if 'displayName' in item:
+                    create_str += f".displayName('{item['displayName']}')"
+                if 'tag' in item:
+                    create_str += f".tag('{item['tag']}')"
+                if 'tier' in item:
+                    create_str += f".tier('{item['tier']}')"
+                # Add other properties here...
+                f.write(f"\n    {create_str}")
+            f.write("\n})")
+            print(json.dumps(self.item_list, indent=4))
     
     
 class BlockRegistry():
-    def __init__(self, instance_path):
+    def __init__(self, instance_path: str):
         self.instance_path = instance_path
         self.block_list = {"blocks": []}
+        
+    def create(self, block_name, tool = None):
+        if tool != None:
+            self.block_list["blocks"].append({"new_block": f"'{block_name}', '{tool}'"})
+        else:
+            self.block_list["blocks"].append({"new_block": f"'{block_name}'"})
+        return self
+
+    def textureAll(self, textureAll):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["textureAll"] = textureAll
+        return self
+
+    def maxStackSize(self, maxStackSize):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["maxStackSize"] = maxStackSize
+        return self
+    
+    def maxDamage(self, maxDamage):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["maxDamage"] = maxDamage
+        return self
+    
+    def burnTime(self, burnTime):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["burnTime"] = burnTime
+        return self
+    
+    def fireResistant(self, fireResistant):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["fireResistant"] = fireResistant
+        return self
+    
+    def rarity(self, rarity):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["rarity"] = rarity
+        return self
+    
+    def glow(self, glow):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["glow"] = glow
+        return self
+    
+    def tooltip(self, tooltip):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["tooltip"] = tooltip
+        return self
+    
+    def color(self, color):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["color"] = color
+        return self
+        
+    def displayName(self, displayName):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["displayName"] = displayName
+        return self
+        
+    def tag(self, tag):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["tag"] = tag
+        return self
+    
+    def tier(self, tier):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["tier"] = tier
+        return self
+        
+    def compile(self, script_name: str, version: str):
+        """compile the kubepy code to valid kubejs code
+
+        Args:
+            script_name (str): name of the script
+            version (str): minecraft version of the script
+        """
+        dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
+        os.makedirs(dir_path, exist_ok=True)
+        #print(json.dumps(self.recipes_list, indent=4))
+        with open(f"{dir_path}\\{script_name}.js", 'w') as f:
+            f.write('// Written with KubePY, expect errors or it to not work at all')
+            if version < "1.19.2":
+                f.write("\nonEvent('block.registry', event => {")
+            else:
+                f.write("\nStartupEvents.registry('block', event => {")
+            for block in self.block_list["blocks"]:
+                create_str = f"event.create({block['new_block']})"
+                if 'textureAll' in block:
+                    create_str += f".textureAll('{block['textureAll']}')"
+                if 'maxStackSize' in block:
+                    create_str += f".maxStackSize({block['maxStackSize']})"
+                if 'maxDamage' in block:
+                    create_str += f".maxDamage({block['maxDamage']})"
+                if 'burnTime' in block:
+                    create_str += f".burnTime({block['burnTime']})"
+                if 'fireResistant' in block:
+                    create_str += f".fireResistant({block['fireResistant']})"
+                if 'rarity' in block:
+                    create_str += f".rarity('{block['rarity']}')"
+                if 'glow' in block:
+                    create_str += f".glow({block['glow']})"
+                if 'tooltip' in block:
+                    create_str += f".tooltip('{block['tooltip']}')"
+                if 'color' in block:
+                    create_str += f".color({block['color']})"
+                if 'displayName' in block:
+                    create_str += f".displayName('{block['displayName']}')"
+                if 'tag' in block:
+                    create_str += f".tag('{block['tag']}')"
+                if 'tier' in block:
+                    create_str += f".tier('{block['tier']}')"
+                # Add other properties here...
+                f.write(f"\n    {create_str}")
+            f.write("\n})")
+            print(json.dumps(self.block_list, indent=4))
