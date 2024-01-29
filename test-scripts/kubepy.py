@@ -69,7 +69,7 @@ class Recipes():
                 f.write(f"\n    event.remove({recipe})")
             f.write("\n})")
         end_time = time.time()
-        print(f"Recipe compile time: {end_time - start_time} seconds")
+        print(fr"Compiled {script_name}.js to {self.instance_path}\kubejs\server_scripts in {end_time - start_time} seconds")
     
 
 class ItemRegistry():
@@ -193,7 +193,7 @@ class ItemRegistry():
             f.write("\n})")
             #print(json.dumps(self.item_list, indent=4))
             end_time = time.time()
-            print(f"Item compile time: {end_time - start_time} seconds")
+            print(fr"Compiled {script_name}.js to {self.instance_path}\kubejs\startup_scripts in {end_time - start_time} seconds")
     
     
 class BlockRegistry():
@@ -284,7 +284,7 @@ class BlockRegistry():
     
     def texture(self, side, texture):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["texture"] = f'"{side}", "{texture}"'
+            self.block_list["blocks"][-1]["texture"] = f"'{side}', '{texture}'"
         return self
     
     def model(self, model):
@@ -292,19 +292,14 @@ class BlockRegistry():
             self.block_list["blocks"][-1]["model"] = model
         return self
     
-    def noItem(self, noItem):
+    def noItem(self):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["noItem"] = noItem
+            self.block_list["blocks"][-1]["noItem"] = 'noItem'
         return self
     
-    def noCollision(self, noCollision):
+    def noCollision(self):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["noCollision"] = noCollision
-        return self
-    
-    def notSolid(self, notSolid):
-        if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["notSolid"] = notSolid
+            self.block_list["blocks"][-1]["noCollision"] = 'noCollision'
         return self
     
     def waterlogged(self):
@@ -312,14 +307,14 @@ class BlockRegistry():
             self.block_list["blocks"][-1]["waterlogged"] = 'waterlogged'
         return self
     
-    def noDrops(self, noDrops):
+    def noDrops(self):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["noDrops"] = noDrops
+            self.block_list["blocks"][-1]["noDrops"] = 'noDrops'
         return self
     
-    def notSolid(self, notSolid):
+    def notSolid(self):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["notSolid"] = notSolid
+            self.block_list["blocks"][-1]["notSolid"] = 'notSolid'
         return self
         
     def slipperiness(self, slipperiness):
@@ -442,11 +437,11 @@ class BlockRegistry():
                 if 'suffocating' in block:
                     create_str += f".suffocating({block['suffocating']})"
                 if 'viewBlocking' in block:
-                    create_str += f".viewBlocking({block['viewBlocking']})"
+                    create_str += f".viewBlocking({str(block['viewBlocking']).lower()})"
                 if 'redstoneConductor' in block:
-                    create_str += f".redstoneConductor({block['redstoneConductor']})"
+                    create_str += f".redstoneConductor({str(block['redstoneConductor']).lower()})"
                 if 'transparent' in block:
-                    create_str += f".transparent({block['transparent']})"
+                    create_str += f".transparent({str(block['transparent']).lower()})"
                 if 'defaultTranslucent' in block:
                     create_str += f".defaultTranslucent()"
                 if 'defaultCutout' in block:
@@ -456,4 +451,4 @@ class BlockRegistry():
             f.write("\n})")
             #print(json.dumps(self.block_list, indent=4))
             end_time = time.time()
-            print(f"Block compile time: {end_time - start_time} seconds")
+            print(fr"Compiled {script_name}.js to {self.instance_path}\kubejs\startup_scripts in {end_time - start_time} seconds")
