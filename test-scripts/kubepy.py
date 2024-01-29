@@ -1,8 +1,9 @@
 import json
 import os
 import requests
-import git
-import shutil
+import time
+#import git
+#import shutil
 
 #https://packaging.python.org/en/latest/tutorials/packaging-projects/
 #https://docs.python.org/3/library/typing.html
@@ -45,6 +46,7 @@ class Recipes():
         self.recipes_list["recipes"]["vanilla"].append({"type": "smithing", "output": output, "input": input, "upgrade_item": upgrade_item})
     
     def compile(self, script_name: str, version):
+        start_time = time.time()
         dir_path = f"{self.instance_path}\\kubejs\\server_scripts"
         os.makedirs(dir_path, exist_ok=True)
         #print(json.dumps(self.recipes_list, indent=4))
@@ -66,6 +68,8 @@ class Recipes():
             for recipe in self.remove_list["removals"]:
                 f.write(f"\n    event.remove({recipe})")
             f.write("\n})")
+        end_time = time.time()
+        print(f"Recipe compile time: {end_time - start_time} seconds")
     
 
 class ItemRegistry():
@@ -148,6 +152,7 @@ class ItemRegistry():
             script_name (str): name of the script
             version (str): minecraft version of the script
         """
+        start_time = time.time()
         dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
         os.makedirs(dir_path, exist_ok=True)
         #print(json.dumps(self.recipes_list, indent=4))
@@ -186,15 +191,21 @@ class ItemRegistry():
                 # Add other properties here...
                 f.write(f"\n    {create_str}")
             f.write("\n})")
-            print(json.dumps(self.item_list, indent=4))
+            #print(json.dumps(self.item_list, indent=4))
+            end_time = time.time()
+            print(f"Item compile time: {end_time - start_time} seconds")
     
     
 class BlockRegistry():
+    """Create custom blocks. Please read more [here](https://kubejs.com/wiki/ref/BlockBuilder)
+    """
     def __init__(self, instance_path: str):
         self.instance_path = instance_path
         self.block_list = {"blocks": []}
         
     def create(self, block_name, tool = None):
+        """Create custom blocks. Please read more [here](https://kubejs.com/wiki/ref/BlockBuilder)
+        """
         if tool != None:
             self.block_list["blocks"].append({"new_block": f"'{block_name}', '{tool}'"})
         else:
@@ -206,59 +217,159 @@ class BlockRegistry():
             self.block_list["blocks"][-1]["textureAll"] = textureAll
         return self
 
-    def maxStackSize(self, maxStackSize):
+    def displayName(self, displayName):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["maxStackSize"] = maxStackSize
+            self.block_list["blocks"][-1]["displayName"] = displayName
         return self
     
-    def maxDamage(self, maxDamage):
+    def tagBlock(self, tagBlock):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["maxDamage"] = maxDamage
+            self.block_list["blocks"][-1]["tagBlock"] = tagBlock
         return self
     
-    def burnTime(self, burnTime):
+    def tagItem(self, tagItem):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["burnTime"] = burnTime
+            self.block_list["blocks"][-1]["tagItem"] = tagItem
         return self
     
-    def fireResistant(self, fireResistant):
+    def tagBoth(self, tagBoth):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["fireResistant"] = fireResistant
+            self.block_list["blocks"][-1]["tagBoth"] = tagBoth
         return self
     
-    def rarity(self, rarity):
+    def hardness(self, hardness):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["rarity"] = rarity
+            self.block_list["blocks"][-1]["hardness"] = hardness
         return self
     
-    def glow(self, glow):
+    def resistance(self, resistance):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["glow"] = glow
+            self.block_list["blocks"][-1]["resistance"] = resistance
         return self
     
-    def tooltip(self, tooltip):
+    def unbreakable(self, unbreakable):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["tooltip"] = tooltip
+            self.block_list["blocks"][-1]["unbreakable"] = unbreakable
+        return self
+    
+    def lightLevel(self, lightLevel):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["lightLevel"] = lightLevel
+        return self
+        
+    def opaque(self, opaque):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["opaque"] = opaque
+        return self
+        
+    def fullBlock(self, fullBlock):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["fullBlock"] = fullBlock
+        return self
+    
+    def requiresTool(self, requiresTool):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["requiresTool"] = requiresTool
+        return self
+    
+    def renderType(self, renderType):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["renderType"] = renderType
         return self
     
     def color(self, color):
         if self.block_list["blocks"]:
             self.block_list["blocks"][-1]["color"] = color
         return self
-        
-    def displayName(self, displayName):
+    
+    def texture(self, side, texture):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["displayName"] = displayName
-        return self
-        
-    def tag(self, tag):
-        if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["tag"] = tag
+            self.block_list["blocks"][-1]["texture"] = f'"{side}", "{texture}"'
         return self
     
-    def tier(self, tier):
+    def model(self, model):
         if self.block_list["blocks"]:
-            self.block_list["blocks"][-1]["tier"] = tier
+            self.block_list["blocks"][-1]["model"] = model
+        return self
+    
+    def noItem(self, noItem):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["noItem"] = noItem
+        return self
+    
+    def noCollision(self, noCollision):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["noCollision"] = noCollision
+        return self
+    
+    def notSolid(self, notSolid):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["notSolid"] = notSolid
+        return self
+    
+    def waterlogged(self):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["waterlogged"] = 'waterlogged'
+        return self
+    
+    def noDrops(self, noDrops):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["noDrops"] = noDrops
+        return self
+    
+    def notSolid(self, notSolid):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["notSolid"] = notSolid
+        return self
+        
+    def slipperiness(self, slipperiness):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["slipperiness"] = slipperiness
+        return self
+        
+    def speedFactor(self, speedFactor):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["speedFactor"] = speedFactor
+        return self
+        
+    def jumpFactor(self, jumpFactor):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["jumpFactor"] = jumpFactor
+        return self
+        
+    def noValidSpawns(self, noValidSpawns):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["noValidSpawns"] = noValidSpawns
+        return self
+        
+    def suffocating(self, suffocating):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["suffocating"] = suffocating
+        return self
+        
+    def viewBlocking(self, viewBlocking):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["viewBlocking"] = viewBlocking
+        return self
+        
+    def redstoneConductor(self, redstoneConductor):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["redstoneConductor"] = redstoneConductor
+        return self
+        
+    def transparent(self, transparent):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["transparent"] = transparent
+        return self
+    
+    def defaultTranslucent(self, defaultTranslucent):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["defaultTranslucent"] = defaultTranslucent
+        return self
+    
+    def defaultCutout(self, defaultCutout):
+        if self.block_list["blocks"]:
+            self.block_list["blocks"][-1]["defaultCutout"] = defaultCutout
         return self
         
     def compile(self, script_name: str, version: str):
@@ -268,6 +379,7 @@ class BlockRegistry():
             script_name (str): name of the script
             version (str): minecraft version of the script
         """
+        start_time = time.time()
         dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
         os.makedirs(dir_path, exist_ok=True)
         #print(json.dumps(self.recipes_list, indent=4))
@@ -281,29 +393,67 @@ class BlockRegistry():
                 create_str = f"event.create({block['new_block']})"
                 if 'textureAll' in block:
                     create_str += f".textureAll('{block['textureAll']}')"
-                if 'maxStackSize' in block:
-                    create_str += f".maxStackSize({block['maxStackSize']})"
-                if 'maxDamage' in block:
-                    create_str += f".maxDamage({block['maxDamage']})"
-                if 'burnTime' in block:
-                    create_str += f".burnTime({block['burnTime']})"
-                if 'fireResistant' in block:
-                    create_str += f".fireResistant({block['fireResistant']})"
-                if 'rarity' in block:
-                    create_str += f".rarity('{block['rarity']}')"
-                if 'glow' in block:
-                    create_str += f".glow({block['glow']})"
-                if 'tooltip' in block:
-                    create_str += f".tooltip('{block['tooltip']}')"
-                if 'color' in block:
-                    create_str += f".color({block['color']})"
                 if 'displayName' in block:
                     create_str += f".displayName('{block['displayName']}')"
-                if 'tag' in block:
-                    create_str += f".tag('{block['tag']}')"
-                if 'tier' in block:
-                    create_str += f".tier('{block['tier']}')"
+                if 'tagBlock' in block:
+                    create_str += f".tagBlock('{block['tagBlock']}')"
+                if 'tagItem' in block:
+                    create_str += f".tagItem('{block['tagItem']}')"
+                if 'tagBoth' in block:
+                    create_str += f".tagBoth('{block['tagBoth']}')"
+                if 'hardness' in block:
+                    create_str += f".hardness({block['hardness']})"
+                if 'resistance' in block:
+                    create_str += f".resistance({block['resistance']})"
+                if 'unbreakable' in block:
+                    create_str += f".unbreakable()"
+                if 'lightLevel' in block:
+                    create_str += f".lightLevel({block['lightLevel']})"
+                if 'opaque' in block:
+                    create_str += f".opaque({block['opaque']})"
+                if 'fullBlock' in block:
+                    create_str += f".fullBlock({block['fullBlock']})"
+                if 'requiresTool' in block:
+                    create_str += f".requiresTool({block['requiresTool']})"
+                if 'renderType' in block:
+                    create_str += f".renderType('{block['renderType']}')"
+                if 'texture' in block:
+                    create_str += f".texture({block['texture']})"
+                if 'model' in block:
+                    create_str += f".model('{block['model']}')"
+                if 'noItem' in block:
+                    create_str += f".noItem()"
+                if 'noCollision' in block:
+                    create_str += f".noCollision()"
+                if 'notSolid' in block:
+                    create_str += f".notSolid()"
+                if 'waterlogged' in block:
+                    create_str += f".waterlogged()"
+                if 'noDrops' in block:
+                    create_str += f".noDrops()"
+                if 'slipperiness' in block:
+                    create_str += f".slipperiness({block['slipperiness']})"
+                if 'speedFactor' in block:
+                    create_str += f".speedFactor({block['speedFactor']})"
+                if 'jumpFactor' in block:
+                    create_str += f".jumpFactor({block['jumpFactor']})"
+                if 'noValidSpawns' in block:
+                    create_str += f".noValidSpawns({block['noValidSpawns']})"
+                if 'suffocating' in block:
+                    create_str += f".suffocating({block['suffocating']})"
+                if 'viewBlocking' in block:
+                    create_str += f".viewBlocking({block['viewBlocking']})"
+                if 'redstoneConductor' in block:
+                    create_str += f".redstoneConductor({block['redstoneConductor']})"
+                if 'transparent' in block:
+                    create_str += f".transparent({block['transparent']})"
+                if 'defaultTranslucent' in block:
+                    create_str += f".defaultTranslucent()"
+                if 'defaultCutout' in block:
+                    create_str += f".defaultCutout()"
                 # Add other properties here...
                 f.write(f"\n    {create_str}")
             f.write("\n})")
-            print(json.dumps(self.block_list, indent=4))
+            #print(json.dumps(self.block_list, indent=4))
+            end_time = time.time()
+            print(f"Block compile time: {end_time - start_time} seconds")

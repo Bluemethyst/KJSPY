@@ -6,6 +6,7 @@ items = kubepy.ItemRegistry(instance_path=instance_path)
 blocks = kubepy.BlockRegistry(instance_path=instance_path)
 
 blocks.create('test_block').textureAll('minecraft:block/oak_log')
+blocks.create('test_2').texture('up', 'minecraft:block/white_wool').waterlogged().transparent(True)
 
 items.create('test_item').texture('minecraft:block/torch').maxStackSize(16).displayName('yoo this workin?')
 items.create('test_item2').texture('minecraft:block/stone').maxStackSize(64).burnTime(120)
