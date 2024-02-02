@@ -1,6 +1,5 @@
 import json
 import os
-import requests
 import time
 #import git
 #import shutil
@@ -8,6 +7,8 @@ import time
 #https://packaging.python.org/en/latest/tutorials/packaging-projects/
 #https://docs.python.org/3/library/typing.html
             
+
+version = None
 
 class Recipes():
     def __init__(self, instance_path):
@@ -45,7 +46,7 @@ class Recipes():
     def smithing(self, output, input, upgrade_item):
         self.recipes_list["recipes"]["vanilla"].append({"type": "smithing", "output": output, "input": input, "upgrade_item": upgrade_item})
     
-    def compile(self, script_name: str, version):
+    def compile(self, script_name: str):
         start_time = time.time()
         dir_path = f"{self.instance_path}\\kubejs\\server_scripts"
         os.makedirs(dir_path, exist_ok=True)
@@ -145,7 +146,7 @@ class ItemRegistry():
             self.item_list["items"][-1]["tier"] = tier
         return self
         
-    def compile(self, script_name: str, version: str):
+    def compile(self, script_name: str):
         """compile the kubepy code to valid kubejs code
 
         Args:
@@ -203,13 +204,10 @@ class BlockRegistry():
         self.instance_path = instance_path
         self.block_list = {"blocks": []}
         
-    def create(self, block_name, tool = None):
+    def create(self, block_name):
         """Create custom blocks. Please read more [here](https://kubejs.com/wiki/ref/BlockBuilder)
         """
-        if tool != None:
-            self.block_list["blocks"].append({"new_block": f"'{block_name}', '{tool}'"})
-        else:
-            self.block_list["blocks"].append({"new_block": f"'{block_name}'"})
+        self.block_list["blocks"].append({"new_block": f"'{block_name}'"})
         return self
 
     def textureAll(self, textureAll):
@@ -367,7 +365,7 @@ class BlockRegistry():
             self.block_list["blocks"][-1]["defaultCutout"] = defaultCutout
         return self
         
-    def compile(self, script_name: str, version: str):
+    def compile(self, script_name: str):
         """compile the kubepy code to valid kubejs code
 
         Args:
@@ -452,3 +450,154 @@ class BlockRegistry():
             #print(json.dumps(self.block_list, indent=4))
             end_time = time.time()
             print(fr"Compiled {script_name}.js to {self.instance_path}\kubejs\startup_scripts in {end_time - start_time} seconds")
+            
+class FluidRegistry():
+    """Create custom fluids. Please read more [here](https://kubejs.com/wiki/tutorials/fluid-registry)
+    """
+    def __init__(self, instance_path: str):
+        self.instance_path = instance_path
+        self.fluid_list = {"fluids": []}
+        
+    def create(self, fluid_name):
+        """Create custom fluids. Please read more [here](https://kubejs.com/wiki/tutorials/fluid-registry)
+        """
+        self.fluid_list["fluids"].append({"new_fluid": f"'{fluid_name}'"})
+        return self
+    
+    def displayName(self, displayName):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["displayName"] = displayName
+        return self
+    
+    def rarity(self, rarity):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["rarity"] = rarity
+        return self
+    
+    def color(self, color):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["color"] = color
+        return self
+    
+    def bucketColor(self, bucketColor):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["bucketColor"] = bucketColor
+        return self
+    
+    def thinTexture(self, thinTexture):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["thinTexture"] = thinTexture
+        return self
+    
+    def thickTexture(self, thickTexture):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["thickTexture"] = thickTexture
+        return self
+    
+    def builtinTextures(self):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["builtinTextures"] = 'builtinTextures'
+        return self
+    
+    def stillTexture(self, stillTexture):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["stillTexture"] = stillTexture
+        return self
+    
+    def flowingTexture(self, flowingTexture):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["flowingTexture"] = flowingTexture
+        return self
+    
+    def noBucket(self):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["noBucket"] = 'noBucket'
+        return self
+    
+    def noBlock(self):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["noBlock"] = 'noBlock'
+        return self
+    
+    def gaseous(self):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["gaseous"] = 'gaseous'
+        return self
+    
+    def luminosity(self, luminosity):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["luminosity"] = luminosity
+        return self
+    
+    def density(self, density):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["density"] = density
+        return self
+    
+    def temperature(self, temperature):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["temperature"] = temperature
+        return self
+    
+    def viscosity(self, viscosity):
+        if self.fluid_list["fluids"]:
+            self.fluid_list["fluids"][-1]["viscosity"] = viscosity
+        return self
+    
+    def compile(self, script_name: str):
+            """compile the kubepy code to valid kubejs code
+
+            Args:
+                script_name (str): name of the script
+                version (str): minecraft version of the script
+            """
+            start_time = time.time()
+            dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
+            os.makedirs(dir_path, exist_ok=True)
+            print(json.dumps(self.fluid_list, indent=4))
+            with open(f"{dir_path}\\{script_name}.js", 'w') as f:
+                f.write('// Written with KubePY, expect errors or it to not work at all')
+                if version < "1.19.2":
+                    f.write("\nonEvent('fluid.registry', event => {")
+                else:
+                    f.write("\nStartupEvents.registry('fluid', event => {")
+                for item in self.fluid_list["fluids"]:
+                    create_str = f"event.create({item['new_fluid']})"
+                    if 'displayName' in item:
+                        create_str += f".displayName({item['displayName']})"
+                    if 'rarity' in item:
+                        create_str += f".rarity('{item['rarity']}')"
+                    if 'color' in item:
+                        create_str += f".color({item['color']})"
+                    if 'bucketColor' in item:
+                        create_str += f".bucketColor({item['bucketColor']})"
+                    if 'thinTexture' in item:
+                        create_str += f".thinTexture({item['thinTexture']})"
+                    if 'thickTexture' in item:
+                        create_str += f".thickTexture({item['thickTexture']})"
+                    if 'builtinTextures' in item:
+                        create_str += f".builtinTextures()"
+                    if 'stillTexture' in item:
+                        create_str += f".stillTexture('{item['stillTexture']}')"
+                    if 'flowingTexture' in item:
+                        create_str += f".flowingTexture('{item['flowingTexture']}')"
+                    if 'noBucket' in item:
+                        create_str += f".noBucket()"
+                    if 'noBlock' in item:
+                        create_str += f".noBlock()"
+                    if 'gaseous' in item:
+                        create_str += f".gaseous()"
+                    if 'luminosity' in item:
+                        create_str += f".luminosity({item['luminosity']})"
+                    if 'density' in item:
+                        create_str += f".density({item['density']})"
+                    if 'temperature' in item:
+                        create_str += f".temperature({item['temperature']})"
+                    if 'viscosity' in item:
+                        create_str += f".viscosity({item['viscosity']})"
+                    
+                    f.write(f"\n    {create_str}")
+                f.write("\n})")
+                #print(json.dumps(self.item_list, indent=4))
+                end_time = time.time()
+                print(fr"Compiled {script_name}.js to {self.instance_path}\kubejs\startup_scripts in {end_time - start_time} seconds")
