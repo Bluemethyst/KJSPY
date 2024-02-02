@@ -6,7 +6,8 @@ KubePY is a Python way to write KubeJS scripts for Minecraft!
 - [x] Full vanilla recipe support
 - [x] Full custom block support
 - [x] Full custom item support
-- [ ] Full custom fluid support
+- [x] Full custom fluid support
 - [ ] KJS Addon support for recipes and registries
+- [ ] KJSPKG Integration, feel free to help me out on this one!
 - [ ] Advanced python features to js
 
