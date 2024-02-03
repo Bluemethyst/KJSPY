@@ -1,11 +1,11 @@
-import kubepy
+import kjspy
 
-kubepy.version = '1.20.1'
+kjspy.init('1.20.1')
 instance_path = r"D:\Minecraft\instances\1.20.1(2)\.minecraft"
 
-items = kubepy.ItemRegistry(instance_path=instance_path)
-blocks = kubepy.BlockRegistry(instance_path=instance_path)
-fluids = kubepy.FluidRegistry(instance_path=instance_path)
+items = kjspy.ItemRegistry(instance_path=instance_path)
+blocks = kjspy.BlockRegistry(instance_path=instance_path)
+fluids = kjspy.FluidRegistry(instance_path=instance_path)
 
 fluids.create('test_fluid').thinTexture('0xff0000')
 

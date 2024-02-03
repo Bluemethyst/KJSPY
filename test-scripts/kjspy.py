@@ -8,7 +8,9 @@ import time
 #https://docs.python.org/3/library/typing.html
             
 
-version = None
+def init(mcVersion):
+    global version
+    version = mcVersion
 
 class Recipes():
     def __init__(self, instance_path):
@@ -554,7 +556,7 @@ class FluidRegistry():
             start_time = time.time()
             dir_path = f"{self.instance_path}\\kubejs\\startup_scripts"
             os.makedirs(dir_path, exist_ok=True)
-            print(json.dumps(self.fluid_list, indent=4))
+            #print(json.dumps(self.fluid_list, indent=4))
             with open(f"{dir_path}\\{script_name}.js", 'w') as f:
                 f.write('// Written with KubePY, expect errors or it to not work at all')
                 if version < "1.19.2":

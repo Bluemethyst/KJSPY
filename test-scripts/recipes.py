@@ -1,10 +1,10 @@
-import kubepy
+import kjspy
 
 # https://kubejs.com/wiki/tutorials/recipes
 
 instance_path = r"D:\Minecraft\instances\1.20.1(2)\.minecraft"
-
-recipes = kubepy.Recipes(instance_path=instance_path)
+kjspy.init('1.20.1')
+recipes = kjspy.Recipes(instance_path=instance_path)
 
 recipes.shapeless('minecraft:diamond', 'minecraft:iron_block')
 recipes.shaped('minecraft:stone',['A B',' C ','B A'],{'A': 'minecraft:andesite','B': 'minecraft:diorite','C': 'minecraft:granite'})
@@ -29,4 +29,4 @@ recipes.custom({
 recipes.remove({'id': 'minecraft:glowstone'})
 
 
-recipes.compile('recipes_kpy', '1.20.1')
+recipes.compile('recipes_kpy')

@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: kjspy
+Version: 0.1.0
+Summary: A Python way to write KubeJS scripts for Minecraft!
+Home-page: https://github.com/Bluemethyst/KubePY
+Author: ArjanCodes
+Author-email: bluemethyst@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+# KubePY
+
+KubePY is a Python way to write KubeJS scripts for Minecraft!
+
+# TODO
+
+-   [x] [Wiki](https://docs.bluemethyst.dev)
+-   [x] Full vanilla recipe support
+-   [x] Full custom block support
+-   [x] Full custom item support
+-   [x] Full custom fluid support
+-   [ ] KJS Addon support for recipes and registries
+-   [ ] KJSPKG Integration, feel free to help me out on this one!
+-   [ ] Advanced python features to js

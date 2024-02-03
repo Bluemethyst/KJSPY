@@ -1,0 +1,10 @@
+LICENCE
+README.md
+setup.py
+app/kjspy/__init__.py
+app/kjspy.egg-info/PKG-INFO
+app/kjspy.egg-info/SOURCES.txt
+app/kjspy.egg-info/dependency_links.txt
+app/kjspy.egg-info/top_level.txt
+app/kjspy/src/__init__.py
+app/kjspy/src/kjspy.py
