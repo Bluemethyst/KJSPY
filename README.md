@@ -1,5 +1,6 @@
-# KubePY
-KubePY is a Python way to write KubeJS scripts for Minecraft!
+# KJSPY
+KJSPY is a Python way to write KubeJS scripts for Minecraft!
+## Download [here](https://pypi.org/project/kjspy/)
 
 # TODO
 - [x] [Wiki](https://docs.bluemethyst.dev)
