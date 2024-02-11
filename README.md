@@ -4,7 +4,7 @@ KJSPY is a Python way to write KubeJS scripts for Minecraft!
 
 # TODO
 - [x] [Wiki](https://docs.bluemethyst.dev)
-- [x] Release on [Pypi](pypi.org/project/kjspy/)! 
+- [x] Release on [Pypi](https://pypi.org/project/kjspy)! 
 - [x] Full vanilla recipe support
 - [x] Full custom block support
 - [x] Full custom item support
